@@ -5,7 +5,7 @@ from xml.etree.ElementTree import ParseError
 from .schemas import PageData, Image
 
 
-def extract_urls_from_sitemap(xml_content):
+def extract_urls_from_xml(xml_content):
     try:
         root = ET.fromstring(xml_content)
     except ParseError as e:
