@@ -3,7 +3,11 @@ import requests
 
 def get_response_text(url):
     try:
-        response = requests.get(url)
+        headers = {
+            'User-Agent': 'Mozilla/5.0',
+            'Referer': 'http://google.com/'
+        }
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
         return response.text
     except requests.RequestException as e:

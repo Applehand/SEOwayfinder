@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import json
 from urllib.parse import urljoin, urlparse
 from xml.etree.ElementTree import ParseError
 from .schemas import PageData, Image
@@ -45,27 +46,54 @@ def extract_page_data(page, base_url: str) -> PageData:
         'h6': [h6.get_text(strip=True) for h6 in page.find_all('h6')],
     }
 
+    # Extract hreflang tags
+    hreflangs = [link.get('href') for link in page.find_all('link', rel='alternate', hreflang=True)]
+
+    # Extract structured data (JSON-LD)
+    structured_data = [json.loads(script.string.strip()) for script in page.find_all('script', type='application/ld+json') if script.string]
+
+    # Extract robots meta tag
+    robots_tag = page.find('meta', attrs={'name': 'robots'})
+    robots = robots_tag.get('content', "").strip() if robots_tag else ""
+
+    # Extract canonical URL
+    canonical_tag = page.find('link', rel='canonical')
+    canonical = canonical_tag.get('href', "").strip() if canonical_tag else ""
+
     # Extract links (convert relative URLs to absolute)
-    links = [urljoin(base_url, a.get('href')) for a in page.find_all('a', href=True)]
+    links = [urljoin(base_url, a.get('href', '')) for a in page.find_all('a', href=True)]
+
+    # Classify links as internal or external
+    parsed_base_url = urlparse(base_url)
+    internal_links = []
+    external_links = []
+    for href in links:
+        parsed_href = urlparse(href)
+        if parsed_href.netloc == parsed_base_url.netloc:
+            internal_links.append(href)
+        else:
+            external_links.append(href)
 
     # Extract images
-    images = [Image(src=urljoin(base_url, img.get('src')), alt=img.get('alt', "").strip()) for img in page.find_all('img') if img.get('src')]
+    images = [Image(src=urljoin(base_url, img.get('src', '')), alt=img.get('alt', "").strip()) for img in page.find_all('img') if img.get('src')]
 
     # Extract paragraphs
     paragraphs = [p.get_text(strip=True) for p in page.find_all('p')]
 
     # Extract scripts and stylesheets
-    scripts = [urljoin(base_url, script.get('src')) for script in page.find_all('script', src=True)]
-    stylesheets = [urljoin(base_url, link.get('href')) for link in page.find_all('link', rel='stylesheet', href=True)]
+    scripts = [urljoin(base_url, script.get('src', '')) for script in page.find_all('script', src=True)]
+    stylesheets = [urljoin(base_url, link.get('href', '')) for link in page.find_all('link', rel='stylesheet', href=True)]
 
     # Example slug extraction from URL
     parsed_url = urlparse(base_url)
     slug = '/' + parsed_url.path.lstrip('/')
 
     # Extract params, query, and fragment
-    params = parsed_url.params
-    query = parsed_url.query
-    fragment = parsed_url.fragment
+    url_parts = {
+        'params': parsed_url.params,
+        'query': parsed_url.query,
+        'fragment': parsed_url.fragment
+    }
 
     return PageData(
         title=title,
@@ -77,7 +105,11 @@ def extract_page_data(page, base_url: str) -> PageData:
         scripts=scripts,
         stylesheets=stylesheets,
         slug=slug,
-        params=params,
-        query=query,
-        fragment=fragment
+        url_parts=url_parts,
+        canonical=canonical,
+        robots=robots,
+        structured_data=structured_data,
+        hreflangs=hreflangs,
+        internal_links=internal_links,
+        external_links=external_links
     )

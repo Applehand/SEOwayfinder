@@ -1,6 +1,8 @@
 import os
 import argparse
+import json
 from urllib.parse import urlparse
+import time
 
 from .extractor import extract_urls_from_sitemap, extract_page_data
 from .crawler import crawl_sitemap_url
@@ -46,7 +48,13 @@ def main():
 
     all_refined_page_data = []
     for url in sitemap_urls:
+        time.sleep(1)
         raw_page_data, base_url = crawl_sitemap_url(url)
         if raw_page_data:
             refined_data = extract_page_data(raw_page_data, base_url)
             all_refined_page_data.append(refined_data)
+
+    if all_refined_page_data:
+        with open("test.txt", "w") as file:
+            json.dump([data.dict() for data in all_refined_page_data], file, indent=4, ensure_ascii=False)
+
