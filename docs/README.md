@@ -1,6 +1,6 @@
 # SEOcli
 
-**SEOcli** is a command-line tool designed for SEO tasks like parsing sitemap URLs or file paths, extracting page data such as meta descriptions, headings, links, and more. This tool is ideal for quickly analyzing web pages in bulk and extracting essential SEO data.
+**SEOcli** is a command-line tool for parsing web page data from URLs in a sitemap. This tool is ideal for quickly analyzing web pages in bulk and extracting essential SEO data.
 
 ## Features
 
@@ -11,13 +11,14 @@
   - Headings (H1-H6)
   - Links, Images, Scripts, and Stylesheets
   - URL slugs, query parameters, and fragments
+  - Robots, HREflang, canonicals
 - Output results in a structured format.
 
 ## Installation
 
 To install the SEOcli tool from the GitHub repository:
 
-1. Make sure you have Python installed on your system (Python 3.6+ recommended).
+1. Make sure you have Python installed on your system
 2. Install the package using `pip` by running:
 
 ```bash
