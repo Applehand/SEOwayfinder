@@ -3,6 +3,8 @@ import json
 import os
 import pyperclip
 from urllib.parse import urlparse
+import aiohttp
+import asyncio
 
 
 def get_response_text(url):
@@ -53,14 +55,22 @@ def handle_paste_from_clipboard():
     return sitemap_urls
 
 
-def check_link_status(links):
-    non_200_links = []
-    for link in links:
-        try:
-            response = requests.head(link, allow_redirects=True)
-            if response.status_code != 200:
-                non_200_links.append(link)
-        except requests.RequestException:
-            non_200_links.append(link)  # Flag links that fail outright
+async def fetch_status(session, url):
+    try:
+        async with session.head(url, timeout=10) as response:
+            return url, response.status
+    except:
+        return url, None
+
+
+async def check_link_status_async(links):
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_status(session, link) for link in links]
+        results = await asyncio.gather(*tasks)
+    non_200_links = [url for url, status in results if status != 200 or status is None]
     return non_200_links
+
+
+def check_link_status(links):
+    return asyncio.run(check_link_status_async(links))
 
