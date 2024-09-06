@@ -76,13 +76,11 @@ def main():
     args = parser.parse_args()
     output_file_location = args.output
 
-    # Handle input based on whether it's a URL or 'paste' command
     if args.input == 'paste':
         sitemap_urls = utils.handle_paste_from_clipboard()
         refined_page_data = process_urls(sitemap_urls)
         utils.write_to_file(refined_page_data, output_file_location)
     else:
-        # Assume it's a sitemap URL and process it
         sitemap_urls = handle_sitemap_input(args.input)
         refined_page_data = process_urls(sitemap_urls)
         utils.write_to_file(refined_page_data, output_file_location)
