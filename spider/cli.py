@@ -14,10 +14,8 @@ def handle_sitemap_input(sitemap_input):
 
     def process_sitemap(sitemap_url):
         xml_content = utils.get_response_text(sitemap_url)
-
         if xml_content:
             locs = extract_urls_from_sitemap(xml_content)
-
             for loc in locs:
                 if loc.endswith('.xml'):
                     print(f"Processing Sitemap: {loc}")
@@ -42,6 +40,11 @@ def handle_sitemap_input(sitemap_input):
     return sitemap_urls
 
 
+def get_default_output_file():
+    desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+    return os.path.join(desktop_path, "output.txt")
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="seo",
@@ -52,6 +55,12 @@ def main():
         'sitemap_input',
         type=str,
         help='The URL or file path of the sitemap to process'
+    )
+    parser.add_argument(
+        '--output',
+        type=str,
+        default=get_default_output_file(),
+        help='The output file path. Defaults to output.txt on your desktop.'
     )
 
     args = parser.parse_args()
@@ -66,6 +75,6 @@ def main():
             all_refined_page_data.append(refined_data)
 
     if all_refined_page_data:
-        with open("test.txt", "w") as file:
+        with open(args.output, "w") as file:
             json.dump([data.dict() for data in all_refined_page_data], file, indent=4, ensure_ascii=False)
 
