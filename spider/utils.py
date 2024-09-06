@@ -1,6 +1,5 @@
 import requests
 import json
-import os
 import pyperclip
 from urllib.parse import urlparse
 import aiohttp
@@ -22,7 +21,6 @@ def get_response_text(url):
         return None
 
 
-
 def read_sitemap_file(file_path):
     try:
         with open(file_path, 'r') as file:
@@ -34,7 +32,8 @@ def read_sitemap_file(file_path):
 
 def write_to_file(page_data, output_file):
     if page_data:
-        with open(output_file, "w") as file:
+        # Use 'utf-8' encoding to ensure all characters can be written to the file
+        with open(output_file, "w", encoding="utf-8") as file:
             json.dump(page_data, file, indent=4, ensure_ascii=False)
         print(f"File saved to: {output_file}")
 
