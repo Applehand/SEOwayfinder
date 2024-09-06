@@ -3,6 +3,7 @@ import json
 from urllib.parse import urljoin, urlparse
 from xml.etree.ElementTree import ParseError
 from .schemas import PageData, Image
+from .utils import check_link_status
 
 
 def extract_urls_from_xml(xml_content):
@@ -28,7 +29,6 @@ def extract_urls_from_xml(xml_content):
     return [loc.text for loc in loc_elements]
 
 
-
 def extract_page_data(page, base_url: str) -> PageData:
     if not page:
         return PageData()  # Return an empty PageData if page is None
@@ -39,6 +39,11 @@ def extract_page_data(page, base_url: str) -> PageData:
     # Extract meta description
     meta_description_tag = page.find('meta', attrs={'name': 'description'})
     meta_description = meta_description_tag.get('content', "").strip() if meta_description_tag else ""
+
+    noindex = False
+    robots_tag = page.find('meta', attrs={'name': 'robots'})
+    if robots_tag and 'noindex' in robots_tag.get('content', '').lower():
+        noindex = True
 
     # Extract headings
     headings = {
@@ -67,6 +72,9 @@ def extract_page_data(page, base_url: str) -> PageData:
     # Extract links (convert relative URLs to absolute)
     links = [urljoin(base_url, a.get('href', '')) for a in page.find_all('a', href=True)]
 
+    # Checking whether each link returns a 200 status
+    non_200_links = check_link_status(links)
+
     # Classify links as internal or external
     parsed_base_url = urlparse(base_url)
     internal_links = []
@@ -80,6 +88,9 @@ def extract_page_data(page, base_url: str) -> PageData:
 
     # Extract images
     images = [Image(src=urljoin(base_url, img.get('src', '')), alt=img.get('alt', "").strip()) for img in page.find_all('img') if img.get('src')]
+
+    # Check if images are missing alt text
+    missing_alt_images = [img.src for img in images if not img.alt]
 
     # Extract paragraphs
     paragraphs = [p.get_text(strip=True) for p in page.find_all('p')]
@@ -115,5 +126,9 @@ def extract_page_data(page, base_url: str) -> PageData:
         structured_data=structured_data,
         hreflangs=hreflangs,
         internal_links=internal_links,
-        external_links=external_links
+        external_links=external_links,
+        noindex=noindex,
+        non_200_links=non_200_links,
+        missing_alt_images=missing_alt_images
     )
+

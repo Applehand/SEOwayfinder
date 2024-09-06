@@ -52,3 +52,15 @@ def handle_paste_from_clipboard():
         print("No valid URLs found in clipboard.")
     return sitemap_urls
 
+
+def check_link_status(links):
+    non_200_links = []
+    for link in links:
+        try:
+            response = requests.head(link, allow_redirects=True)
+            if response.status_code != 200:
+                non_200_links.append(link)
+        except requests.RequestException:
+            non_200_links.append(link)  # Flag links that fail outright
+    return non_200_links
+
