@@ -34,10 +34,15 @@ def write_to_file(page_data, output_file):
     if page_data:
         with open(output_file, "w") as file:
             json.dump(page_data, file, indent=4, ensure_ascii=False)
+        print(f"File saved to: {output_file}")
 
 
 def get_default_output_file():
     desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+    if not os.path.exists(desktop_path):
+        print(f"Desktop path not found: {desktop_path}")
+        desktop_path = os.path.expanduser("~")  # Fallback to home directory
+
     return os.path.join(desktop_path, "output.txt")
 
 
