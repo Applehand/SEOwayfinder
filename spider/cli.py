@@ -10,25 +10,36 @@ from . import utils
 
 
 def handle_sitemap_input(sitemap_input):
-    sitemap_url_list = []
-    if urlparse(sitemap_input).scheme in ['http', 'https']:
-        # Handle as URL
-        xml_content = utils.get_response_text(sitemap_input)
+    sitemap_urls = []
+
+    def process_sitemap(sitemap_url):
+        xml_content = utils.get_response_text(sitemap_url)
+
         if xml_content:
             locs = extract_urls_from_sitemap(xml_content)
+
             for loc in locs:
-                sitemap_url_list.append(loc)
+                if loc.endswith('.xml'):
+                    print(f"Processing Sitemap: {loc}")
+                    process_sitemap(loc)
+                else:
+                    sitemap_urls.append(loc)
+
+    if urlparse(sitemap_input).scheme in ['http', 'https']:
+        process_sitemap(sitemap_input)
     elif os.path.isfile(sitemap_input):
-        # Handle as file path
         xml_content = utils.read_sitemap_file(sitemap_input)
         if xml_content:
             locs = extract_urls_from_sitemap(xml_content)
             for loc in locs:
-                sitemap_url_list.append(loc)
+                if loc.endswith('.xml'):
+                    process_sitemap(loc)
+                else:
+                    sitemap_urls.append(loc)
     else:
         print("Invalid URL or file path")
 
-    return sitemap_url_list
+    return sitemap_urls
 
 
 def main():

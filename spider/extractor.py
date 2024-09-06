@@ -12,7 +12,6 @@ def extract_urls_from_sitemap(xml_content):
         print(f"Failed to parse XML: {e}")
         return []
 
-    # Extract the namespace, if present
     namespace = {}
     for elem in root.iter():
         if '}' in elem.tag:
@@ -20,9 +19,14 @@ def extract_urls_from_sitemap(xml_content):
             namespace['ns'] = namespace_uri
             break
 
-    # Find all 'loc' elements, handling namespaces
-    loc_elements = root.findall('.//ns:loc', namespace)
+    sitemap_elements = root.findall('.//ns:sitemap/ns:loc', namespace)
+    if sitemap_elements:
+        # Recursively handle nested sitemaps
+        return [loc.text for loc in sitemap_elements]
+
+    loc_elements = root.findall('.//ns:url/ns:loc', namespace)
     return [loc.text for loc in loc_elements]
+
 
 
 def extract_page_data(page, base_url: str) -> PageData:
