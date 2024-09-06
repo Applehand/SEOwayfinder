@@ -5,15 +5,13 @@ import pyperclip
 from urllib.parse import urlparse
 import aiohttp
 import asyncio
+from pathlib import Path
 
 
 def get_response_text(url):
     try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0',
-            'Referer': 'http://google.com/'
-        }
-        response = requests.get(url, headers=headers)
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.head(url, headers=headers, timeout=5, allow_redirects=True)
         response.raise_for_status()
         return response.text
     except requests.RequestException as e:
@@ -38,12 +36,13 @@ def write_to_file(page_data, output_file):
 
 
 def get_default_output_file():
-    desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-    if not os.path.exists(desktop_path):
-        print(f"Desktop path not found: {desktop_path}")
-        desktop_path = os.path.expanduser("~")  # Fallback to home directory
+    home = Path.home()
+    desktop = home / 'Desktop'
+    if not desktop.exists():
+        print(f"Desktop path not found: {desktop}, using home directory.")
+        desktop = home
 
-    return os.path.join(desktop_path, "output.txt")
+    return desktop / "output.txt"
 
 
 def handle_paste_from_clipboard():
