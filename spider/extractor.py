@@ -14,23 +14,33 @@ def collect_and_process_sitemaps(sitemap_input, checked_links):
     all_pages_data = {}
 
     def process_sitemap(sitemap_url):
+        print(f"Processing sitemap: {sitemap_url}")
         if sitemap_url in processed_sitemaps:
             print(f"Skipping already processed sitemap: {sitemap_url}")
             return
         processed_sitemaps.add(sitemap_url)
 
+        # Fetch the sitemap content and parse it
         xml_content = fetch_url_content(sitemap_url)
         if not xml_content:
+            print(f"No content found for sitemap: {sitemap_url}")
             return
 
         sitemap_urls, page_urls = extract_urls_from_xml_sitemap(xml_content)
 
+        # Log how many URLs are being processed
+        print(f"Found {len(page_urls)} page URLs and {len(sitemap_urls)} nested sitemaps in {sitemap_url}")
+
+        # Process the page URLs found in the sitemap
         for page_url in page_urls:
+            print(f"Processing page URL: {page_url}")
             page_data = extract_and_parse_page_data(page_url, checked_links)
             if page_data:
                 all_pages_data[page_url] = page_data
 
+        # Recursively process nested sitemaps
         for nested_sitemap_url in sitemap_urls:
+            print(f"Processing nested sitemap: {nested_sitemap_url}")
             process_sitemap(nested_sitemap_url)
 
     if urlparse(sitemap_input).scheme in ['http', 'https']:
