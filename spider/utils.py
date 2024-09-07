@@ -7,21 +7,7 @@ import asyncio
 from pathlib import Path
 
 
-def get_response_text(url):
-    try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0',
-            'Referer': 'http://google.com/'
-        }
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        return response.text
-    except requests.RequestException as e:
-        print(f"Failed to fetch URL: {e}")
-        return None
-
-
-def read_sitemap_file(file_path):
+def read_xml_file(file_path):
     try:
         with open(file_path, 'r') as file:
             return file.read()
@@ -30,11 +16,10 @@ def read_sitemap_file(file_path):
         return None
 
 
-def write_to_file(page_data, output_file):
+def save_json_to_file(page_data, output_file):
     if page_data:
-        # Use 'utf-8' encoding to ensure all characters can be written to the file
         with open(output_file, "w", encoding="utf-8") as file:
-            json.dump(page_data, file, indent=4, ensure_ascii=False)
+            file.write(str(page_data))
         print(f"File saved to: {output_file}")
 
 
@@ -48,7 +33,7 @@ def get_default_output_file():
     return desktop / "output.txt"
 
 
-def handle_paste_from_clipboard():
+def fetch_urls_from_clipboard():
     sitemap_urls = []
     clipboard_content = pyperclip.paste()
     urls = [url.strip() for url in clipboard_content.splitlines() if url.strip()]
@@ -78,6 +63,6 @@ async def check_link_status_async(links):
     return non_200_links
 
 
-def check_link_status(links):
+def validate_link_statuses(links):
     return asyncio.run(check_link_status_async(links))
 

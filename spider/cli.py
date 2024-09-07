@@ -1,58 +1,6 @@
-import os
 import argparse
-from urllib.parse import urlparse
-import time
-
-from .extractor import extract_urls_from_xml, extract_page_data
-from .crawler import crawl_sitemap_url
-from . import utils
-
-
-def handle_sitemap_input(sitemap_input):
-    sitemap_urls = []
-    processed_sitemaps = []
-
-    def process_sitemap(sitemap_url):
-        if sitemap_url in processed_sitemaps:
-            print(f"Skipping already processed sitemap: {sitemap_url}")
-            return
-        processed_sitemaps.append(sitemap_url)
-        xml_content = utils.get_response_text(sitemap_url)
-        if xml_content:
-            locs = extract_urls_from_xml(xml_content)
-            for loc in locs:
-                if loc.endswith('.xml'):
-                    print(f"Processing Sitemap: {loc}")
-                    process_sitemap(loc)
-                else:
-                    sitemap_urls.append(loc)
-
-    if urlparse(sitemap_input).scheme in ['http', 'https']:
-        process_sitemap(sitemap_input)
-    elif os.path.isfile(sitemap_input):
-        xml_content = utils.read_sitemap_file(sitemap_input)
-        if xml_content:
-            locs = extract_urls_from_xml(xml_content)
-            for loc in locs:
-                if loc.endswith('.xml'):
-                    process_sitemap(loc)
-                else:
-                    sitemap_urls.append(loc)
-    else:
-        print("Invalid URL or file path")
-
-    return sitemap_urls
-
-
-def process_urls(sitemap_urls):
-    all_page_data = {}
-    for url in sitemap_urls:
-        time.sleep(1)
-        raw_page_data, base_url = crawl_sitemap_url(url)
-        if raw_page_data:
-            refined_data = extract_page_data(raw_page_data, base_url)
-            all_page_data[base_url] = refined_data.dict()
-    return all_page_data
+from .utils import get_default_output_file, fetch_urls_from_clipboard, save_json_to_file
+from .extractor import collect_and_process_sitemaps, extract_and_parse_page_data
 
 
 def main():
@@ -69,7 +17,7 @@ def main():
     parser.add_argument(
         '-o', '--output',
         type=str,
-        default=utils.get_default_output_file(),
+        default=get_default_output_file(),
         help='The output file path. Defaults to output.txt on your desktop.'
     )
 
@@ -77,11 +25,16 @@ def main():
     output_file_location = args.output
 
     if args.input == 'paste':
-        sitemap_urls = utils.handle_paste_from_clipboard()
-        refined_page_data = process_urls(sitemap_urls)
-        utils.write_to_file(refined_page_data, output_file_location)
+        page_urls = fetch_urls_from_clipboard()
+        all_page_data = {}
+        for page_url in page_urls:
+            page_data = extract_and_parse_page_data(page_url)
+            if page_data:
+                all_page_data[page_url] = page_data
     else:
-        sitemap_urls = handle_sitemap_input(args.input)
-        refined_page_data = process_urls(sitemap_urls)
-        utils.write_to_file(refined_page_data, output_file_location)
+        all_page_data = collect_and_process_sitemaps(args.input)
+
+    save_json_to_file(all_page_data, output_file_location)
+    print(f"Processed data saved to {output_file_location}")
+
 
