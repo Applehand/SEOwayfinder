@@ -1,6 +1,6 @@
 import argparse
-from .utils import get_default_output_file, fetch_urls_from_clipboard, save_json_to_file
-from .extractor import collect_and_process_sitemaps, extract_and_parse_page_data
+from spider.utils import get_default_output_file, fetch_urls_from_clipboard, save_json_to_file
+from spider.extractor import collect_and_process_sitemaps, extract_and_parse_page_data
 
 
 def main():
@@ -37,6 +37,3 @@ def main():
         all_page_data = collect_and_process_sitemaps(args.input, checked_links)
 
     save_json_to_file(all_page_data, output_file_location)
-    print(f"Processed data saved to {output_file_location}")
-
-
