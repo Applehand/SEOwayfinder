@@ -1,6 +1,7 @@
-# SEOcli
+# SEOpus
 
-**SEOcli** is a command-line tool for parsing web page data from URLs in a sitemap or from clipboard input. This tool is ideal for quickly analyzing web pages in bulk and extracting essential SEO data for optimization purposes.
+**SEOpus** is a user-friendly command-line tool that simplifies SEO tasks by effortlessly parsing web page data. It streamlines the extraction of essential SEO insights for bulk analysis and optimization, making interaction with web data easier and more efficient.
+
 
 ## Features
 
@@ -11,25 +12,28 @@
   - Headings (H1-H6)
   - Links, Images, Scripts, and Stylesheets
   - URL slugs, query parameters, and fragments
-  - Robots, HREflang, canonicals
-- Output results in a structured format for further analysis.
+  - Robots, HREflang, and canonical tags
+  - Detect noindex directives
+- Output results in a structured format for easy analysis.
+- Seamlessly handles multiple URLs with caching of checked links to avoid redundant status checks.
+- Supports JSON file output.
 
 ## Installation
 
-To install the SEOcli tool from the GitHub repository:
+To install the SEOpus tool from the GitHub repository:
 
 1. Make sure you have Python installed on your system.
 2. Install the package using `pip` by running:
 
 ```bash
-pip install git+https://github.com/Applehand/SEOcli.git
+pip install git+https://github.com/Applehand/SEOpus.git
 ```
 
 Alternatively, you can clone the repository and install it locally:
 
 ```bash
-git clone https://github.com/Applehand/SEOcli.git
-cd SEOcli
+git clone https://github.com/Applehand/SEOpus.git
+cd SEOpus
 pip install .
 ```
 
@@ -42,33 +46,44 @@ Once installed, you can use the `seo` command in your terminal.
 To parse a sitemap URL and extract data:
 
 ```bash
-seo https://example.com/sitemap.xml
+seo crawl https://example.com/sitemap.xml
 ```
 
 ### Parsing a Local Sitemap XML File:
 
-To parse a local sitemap XML file (ensure the file is available on the path):
+To parse a local sitemap XML file:
 
 ```bash
-seo /path/to/sitemap.xml
+seo crawl /path/to/sitemap.xml
 ```
 
 ### Parsing URLs from the Clipboard:
 
-You can also paste a list of URLs directly from your clipboard using the `paste` command. This is useful if you already have a list of URLs to process:
+You can also paste a sitemap or list of URLs directly from your clipboard using the `paste` command:
 
 ```bash
 seo paste
 ```
-
-Ensure that your clipboard contains valid URLs, one per line, before running this command (copy from a spreadsheet).
 
 ### Saving Output:
 
 You can specify the output file using the `-o` or `--output` option:
 
 ```bash
-seo https://example.com/sitemap.xml -o /path/to/output.json
+seo crawl https://example.com/sitemap.xml -o /path/to/output.json
 ```
 
 By default, the output will be saved as `output.txt` on your desktop.
+
+### Listing Projects (Future Functionality):
+
+To list all projects in the database (coming soon):
+
+```bash
+seo list
+```
+
+## Contribution
+
+Feel free to contribute to SEOpus by submitting issues or pull requests to the GitHub repository.
+
