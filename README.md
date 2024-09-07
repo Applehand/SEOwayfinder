@@ -2,10 +2,9 @@
 
 **SEOpus** is a user-friendly command-line tool that simplifies SEO tasks by effortlessly parsing web page data. It streamlines the extraction of essential SEO insights for bulk analysis and optimization, making interaction with web data easier and more efficient.
 
-
 ## Features
 
-- Parse sitemap URLs, XML files, or URLs from the clipboard.
+- Parse XML sitemaps and URLs.
 - Crawl web pages and extract SEO-relevant data, including:
   - Meta descriptions
   - Page titles
@@ -15,14 +14,13 @@
   - Robots, HREflang, and canonical tags
   - Detect noindex directives
 - Output results in a structured format for easy analysis.
-- Seamlessly handles multiple URLs with caching of checked links to avoid redundant status checks.
 - Supports JSON file output.
 
 ## Installation
 
 To install the SEOpus tool from the GitHub repository:
 
-1. Make sure you have Python installed on your system.
+1. Make sure you have [Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/downloads) installed on your system.
 2. Install the package using `pip` by running:
 
 ```bash
@@ -49,20 +47,20 @@ To parse a sitemap URL and extract data:
 seo crawl https://example.com/sitemap.xml
 ```
 
-### Parsing a Local Sitemap XML File:
-
-To parse a local sitemap XML file:
-
-```bash
-seo crawl /path/to/sitemap.xml
-```
-
 ### Parsing URLs from the Clipboard:
 
 You can also paste a sitemap or list of URLs directly from your clipboard using the `paste` command:
 
 ```bash
 seo paste
+```
+
+### Parsing a Local Sitemap XML File:
+
+To parse a local sitemap XML file:
+
+```bash
+seo crawl /path/to/sitemap.xml
 ```
 
 ### Saving Output:
@@ -83,7 +81,14 @@ To list all projects in the database (coming soon):
 seo list
 ```
 
+## Roadmap
+
+- **SQLite Database Integration**: Store parsed results for projects locally for easy retrieval.
+- **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser.
+- **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results.
+- **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
+- **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
+
 ## Contribution
 
 Feel free to contribute to SEOpus by submitting issues or pull requests to the GitHub repository.
-
