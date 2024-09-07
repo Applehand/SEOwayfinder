@@ -24,15 +24,17 @@ def main():
     args = parser.parse_args()
     output_file_location = args.output
 
+    checked_links = dict()  # To avoid requesting the status of on-page links multiple times
+
     if args.input == 'paste':
         page_urls = fetch_urls_from_clipboard()
         all_page_data = {}
         for page_url in page_urls:
-            page_data = extract_and_parse_page_data(page_url)
+            page_data = extract_and_parse_page_data(page_url, checked_links)
             if page_data:
                 all_page_data[page_url] = page_data
     else:
-        all_page_data = collect_and_process_sitemaps(args.input)
+        all_page_data = collect_and_process_sitemaps(args.input, checked_links)
 
     save_json_to_file(all_page_data, output_file_location)
     print(f"Processed data saved to {output_file_location}")

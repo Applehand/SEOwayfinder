@@ -9,7 +9,7 @@ from .utils import validate_link_statuses, read_xml_file
 from .crawler import fetch_sitemap_content, fetch_url_content
 
 
-def collect_and_process_sitemaps(sitemap_input):
+def collect_and_process_sitemaps(sitemap_input, checked_links):
     processed_sitemaps = set()
     all_pages_data = {}
 
@@ -26,7 +26,7 @@ def collect_and_process_sitemaps(sitemap_input):
         sitemap_urls, page_urls = extract_urls_from_xml_sitemap(xml_content)
 
         for page_url in page_urls:
-            page_data = extract_and_parse_page_data(page_url)
+            page_data = extract_and_parse_page_data(page_url, checked_links)
             if page_data:
                 all_pages_data[page_url] = page_data
 
@@ -40,7 +40,7 @@ def collect_and_process_sitemaps(sitemap_input):
         if xml_content:
             sitemap_urls, page_urls = extract_urls_from_xml_sitemap(xml_content)
             for page_url in page_urls:
-                page_data = extract_and_parse_page_data(page_url)
+                page_data = extract_and_parse_page_data(page_url, checked_links)
                 if page_data:
                     all_pages_data[page_url] = page_data
             for loc in sitemap_urls:
@@ -76,7 +76,7 @@ def extract_urls_from_xml_sitemap(xml_content):
     return sitemap_urls, page_urls
 
 
-def extract_and_parse_page_data(page_url):
+def extract_and_parse_page_data(page_url, checked_links):
     # Delay to avoid overloading the server
     time.sleep(1)
 
@@ -127,7 +127,7 @@ def extract_and_parse_page_data(page_url):
     links = [urljoin(base_url, a.get('href', '')) for a in raw_page_data.find_all('a', href=True)]
 
     # Check link statuses
-    non_200_links = validate_link_statuses(links)
+    non_200_links = validate_link_statuses(links, checked_links)
 
     # Classify links as internal or external
     parsed_base_url = urlparse(base_url)

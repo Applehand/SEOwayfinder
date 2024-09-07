@@ -63,6 +63,20 @@ async def check_link_status_async(links):
     return non_200_links
 
 
-def validate_link_statuses(links):
-    return asyncio.run(check_link_status_async(links))
+def validate_link_statuses(links, checked_links):
+    unchecked_links = [link for link in links if link not in checked_links]
+    new_non_200_links = asyncio.run(check_link_status_async(unchecked_links))
+
+    for link in unchecked_links:
+        if link in new_non_200_links:
+            checked_links[link] = "non-200"
+        else:
+            checked_links[link] = "200"
+
+    non_200_links_for_current_page = [
+        link for link in links if checked_links.get(link) == "non-200"
+    ]
+
+    return non_200_links_for_current_page
+
 
