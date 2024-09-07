@@ -1,5 +1,3 @@
-import requests
-import json
 import pyperclip
 from urllib.parse import urlparse
 import aiohttp
@@ -47,6 +45,11 @@ def fetch_urls_from_clipboard():
     return sitemap_urls
 
 
+def is_valid_http_link(link):
+    parsed_url = urlparse(link)
+    return parsed_url.scheme in ['http', 'https']  # Returns true if http or https
+
+
 async def fetch_status(session, url):
     try:
         async with session.head(url, timeout=10) as response:
@@ -64,7 +67,8 @@ async def check_link_status_async(links):
 
 
 def validate_link_statuses(links, checked_links):
-    unchecked_links = [link for link in links if link not in checked_links]
+    http_links = [link for link in links if is_valid_http_link(link)]
+    unchecked_links = [link for link in http_links if link not in checked_links]
     new_non_200_links = asyncio.run(check_link_status_async(unchecked_links))
 
     for link in unchecked_links:
