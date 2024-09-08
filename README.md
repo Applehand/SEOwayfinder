@@ -1,39 +1,77 @@
 # SEOpus
 
-**SEOpus** is a user-friendly command-line tool that simplifies SEO tasks by effortlessly parsing web page data. It streamlines the extraction of essential SEO insights for bulk analysis and optimization, making interaction with web data easier and more efficient.
+> "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes."  
+> — Marcel Proust
+
+**SEOpus** offers a simple command-line solution to streamline SEO tasks by efficiently parsing web page data. It optimizes the extraction of critical SEO insights for bulk analysis, ensuring smoother and faster interaction with web data.
+
 
 ## Features
 
-- Parse XML sitemaps and URLs.
-- Crawl web pages and extract SEO-relevant data, including:
-  - Meta descriptions
+- Crawl web pages directly or via a sitemap to extract key SEO data, including:
   - Page titles
+  - Meta descriptions
   - Headings (H1-H6)
-  - Links, Images, Scripts, and Stylesheets
+  - Links, images, scripts, and stylesheets
   - URL slugs, query parameters, and fragments
-  - Robots, HREflang, and canonical tags
-  - Detect noindex directives
-- Output results in a structured format for easy analysis.
-- Supports JSON file output.
+  - Robots, HREflang, canonical tags, and noindex directives
+- Output results in a structured, easy-to-read dashboard format for efficient analysis.
+- Generate an Excel sheet with actionable technical SEO recommendations ("tech work") to fix issues identified during the crawl.
 
-## Installation
 
-To install the SEOpus tool from the GitHub repository:
+### Installation Instructions
 
-1. Make sure you have [Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/downloads) installed on your system.
-2. Install the package using `pip` by running:
+To install the **SEOpus** tool, follow these steps:
 
-```bash
-pip install git+https://github.com/Applehand/SEOpus.git
-```
+1. **Ensure You Have Python and Git Installed:**
 
-Alternatively, you can clone the repository and install it locally:
+   - **Python**: You’ll need Python, a popular programming language, installed on your system. You can download and install it from the [official Python website](https://www.python.org/downloads/). Python is available for Windows, macOS, and Linux.
 
-```bash
-git clone https://github.com/Applehand/SEOpus.git
-cd SEOpus
-pip install .
-```
+   - **Add Python to PATH**: During the Python installation process, you’ll see an option to "Add Python to PATH" in the installation window. Make sure this box is checked before you proceed with the installation. This step is very important because it allows you to run Python from the terminal or command prompt.
+
+     - If you forget to check this option, don’t worry! You can manually add Python to your system's PATH by following [this guide](https://realpython.com/add-python-to-path/). Without this, you won’t be able to run the `python` or `pip` commands from the terminal.
+
+   - **Verify Installation**: To check if Python is installed on your machine, open a terminal (on Windows, you can use PowerShell or Command Prompt; on macOS or Linux, use the Terminal app) and run the following command:
+
+       ```bash
+       python --version
+       ```
+
+       If Python is installed, you’ll see the version number. If not, follow the installation guide on the Python website.
+
+   - **Git**: Git is a version control tool that helps manage code. You can download Git from the [Git website](https://git-scm.com/downloads). Follow the installation instructions for your operating system.
+
+     - **Verify Installation**: After installing Git, check if it’s working by running this command in your terminal:
+
+       ```bash
+       git --version
+       ```
+
+       You should see the Git version number.
+
+2. **Install SEOpus Using Python’s Package Manager (pip):**
+
+   Once you have Python and Git installed, you’ll use Python’s package manager, `pip`, to install **SEOpus**. `pip` comes bundled with Python, so you don’t need to install it separately. 
+
+   Here’s what you need to do:
+
+   1. **Open a Terminal**: On Windows, use PowerShell or Command Prompt. On macOS or Linux, use the Terminal app.
+
+   2. **Run the Following Command**: This command will install SEOpus directly from the GitHub repository:
+
+      ```bash
+      pip install git+https://github.com/Applehand/SEOpus.git
+      ```
+
+   3. **Verify Installation**: After the installation is complete, check if SEOpus is installed by running:
+
+      ```bash
+      seo --help
+      ```
+
+      If the tool is installed correctly, you’ll see a list of available commands and options for SEOpus.
+
+---
 
 ## Usage
 
