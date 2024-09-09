@@ -9,13 +9,13 @@ def create_parser():
     parser = argparse.ArgumentParser(
         prog="seo",
         description=(
-            "SEOpus is a user-friendly command-line tool that helps you crawl "
+            "SEOwayfinder is a user-friendly command-line tool that helps you crawl "
             "sitemaps, extract SEO metadata, and generate reports with ease. "
             "Use this tool to analyze web page data in bulk and optimize your site's SEO."
         )
     )
 
-    subparsers = parser.add_subparsers(dest='command', help='Available SEOpus commands')
+    subparsers = parser.add_subparsers(dest='command', help='Available SEOwayfinder commands')
 
     parser_crawl = subparsers.add_parser(
         'crawl',
@@ -43,7 +43,7 @@ def create_parser():
         'paste',
         help=(
             'Crawl a list of URLs or a sitemap copied to your clipboard. '
-            'SEOpus will automatically crawl and extract SEO data from these URLs.'
+            'SEOwayfinder will automatically crawl and extract SEO data from these URLs.'
         )
     )
     parser_paste.add_argument(
@@ -59,7 +59,7 @@ def create_parser():
     parser_list = subparsers.add_parser(
         'list',
         help=(
-            'List all crawled projects stored in the SEOpus database. '
+            'List all crawled projects stored in the SEOwayfinder database. '
             'Use this to view past crawls and retrieve project information.'
         )
     )

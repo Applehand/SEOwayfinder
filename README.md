@@ -1,6 +1,6 @@
 # SEOwayfinder
 
-![The Digital Compass](https://github.com/Applehand/SEOpus/blob/master/assets/digital_compass.jpeg)
+![The Digital Compass](https://github.com/Applehand/SEOwayfinder/blob/master/assets/digital_compass.jpeg)
 
 > "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes."  
 > — Marcel Proust
