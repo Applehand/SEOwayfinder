@@ -1,6 +1,6 @@
 # SEOpus
 
-![The Digital Compass](<img src="https://github.com/Applehand/SEOpus/blob/master/assets/digital_compass.jpeg" width="800" height="400">)
+![The Digital Compass](https://github.com/Applehand/SEOpus/blob/master/assets/digital_compass.jpeg)
 
 > "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes."  
 > — Marcel Proust
