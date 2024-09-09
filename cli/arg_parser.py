@@ -10,7 +10,7 @@ def create_parser():
         prog="seo",
         description=(
             "SEOwayfinder is a user-friendly command-line tool that helps you crawl "
-            "sitemaps, extract SEO metadata, and generate reports with ease. "
+            "web pages, extract SEO metadata, and generate reports with ease. "
             "Use this tool to analyze web page data in bulk and optimize your site's SEO."
         )
     )
@@ -20,14 +20,14 @@ def create_parser():
     parser_crawl = subparsers.add_parser(
         'crawl',
         help=(
-            'Crawl a sitemap URL or local XML file, extract metadata such as meta descriptions, '
-            'page titles, headings, and more. Use the -o option to save the output to a file.'
+            'Crawl a URL or sitemap to extract web page data such as titles, '
+            'images, links, and more. Use the -o option to save the output to a file.'
         )
     )
     parser_crawl.add_argument(
         'input',
         type=str,
-        help="The URL of the sitemap to crawl or the path to a local sitemap XML file"
+        help="The URL or sitemap to crawl for page data."
     )
     parser_crawl.add_argument(
         '-o', '--output',
