@@ -1,6 +1,6 @@
 # SEOwayfinder
 
-> "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes."  
+> "The only true voyage of discovery, the only fountain of Eternal Youth, would be not to visit strange lands but to possess other eyes, to behold the universe through the eyes of another, of a hundred others, to behold the hundred universes that each of them beholds, that each of them is;"  
 > — Marcel Proust
 
 **SEOwayfinder** offers a simple command-line solution to streamline SEO tasks by efficiently parsing web page data. It optimizes the extraction of critical SEO insights for bulk analysis, ensuring smoother and faster interaction with web data.
