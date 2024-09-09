@@ -68,7 +68,7 @@ To install the **SEOwayfinder** tool, follow these steps:
    3. **Verify Installation**: After the installation is complete, check if SEOwayfinder is installed by running:
 
       ```bash
-      seo --help
+      seo
       ```
 
       If the tool is installed correctly, you’ll see a list of available commands and options for SEOwayfinder.
