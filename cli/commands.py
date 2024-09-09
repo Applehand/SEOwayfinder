@@ -7,40 +7,24 @@ def handle_crawl_command(args):
     """
     Handle the 'crawl' command.
 
-    This function is responsible for crawling a sitemap or URL provided as input.
-    It processes the input, extracts SEO-relevant data, and saves the output
-    to a specified file.
+    This function is responsible for crawling a sitemap or URLs provided via input or clipboard.
+    If no input is provided, it automatically grabs URLs from the clipboard.
 
     Args:
-        args (Namespace): Parsed command-line arguments, including the sitemap input and output file path.
+        args (Namespace): Parsed command-line arguments.
 
     Returns:
         None
     """
     checked_links = dict()
-    all_page_data = collect_and_process_sitemaps(args.input, checked_links)
-    save_json_to_file(all_page_data, args.output)
 
-
-def handle_paste_command(output_file_location):
-    """
-    Handle the 'paste' command.
-
-    This function extracts URLs from the clipboard and processes each one. It checks
-    if a URL points to a sitemap (XML) and crawls it. If not, it processes individual pages.
-    The results are then saved to a specified output file.
-
-    Args:
-        output_file_location (str): Path to the file where the results will be saved.
-
-    Returns:
-        None
-    """
-    checked_links = dict()
-    page_urls = fetch_urls_from_clipboard()
+    if args.input:
+        page_urls = [args.input]
+    else:
+        page_urls = fetch_urls_from_clipboard()
 
     if not page_urls:
-        print("No valid URLs found in clipboard.")
+        print("No valid URLs provided or found in clipboard.")
         return
 
     all_page_data = {}
@@ -53,7 +37,7 @@ def handle_paste_command(output_file_location):
             if page_data:
                 all_page_data[page_url] = page_data
 
-    save_json_to_file(all_page_data, output_file_location)
+    save_json_to_file(all_page_data, args.output)
 
 
 def handle_list_command():
@@ -91,10 +75,7 @@ def execute_command():
     if not args.command:
         parser.print_help()
         return
-
     if args.command == 'crawl':
         handle_crawl_command(args)
-    elif args.command == 'paste':
-        handle_paste_command(args.output)
     elif args.command == 'list':
         handle_list_command()

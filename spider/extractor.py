@@ -44,7 +44,6 @@ def collect_and_process_sitemaps(sitemap_input, checked_links):
             print(f"No content found for: {sitemap_url}")
             return
 
-        # Check if the content is an XML sitemap or an HTML page and process accordingly
         if is_xml_content(content, sitemap_url):
             print(f"Detected XML content for URL: {sitemap_url}")
             sitemap_urls, page_urls = extract_urls_from_xml_sitemap(content)
@@ -132,14 +131,12 @@ def extract_and_parse_page_data(page_url, checked_links):
     Returns:
         PageData: An object containing the extracted page data.
     """
-    # Delay to avoid overloading the server
     time.sleep(1)
 
     raw_page_data, base_url = fetch_sitemap_content(page_url)
     if not raw_page_data:
         return None
 
-    # Extracting SEO-relevant metadata and content from the page
     title = raw_page_data.title.string.strip() if raw_page_data.title else ""
 
     meta_description_tag = raw_page_data.find('meta', attrs={'name': 'description'})

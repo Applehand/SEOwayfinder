@@ -87,10 +87,10 @@ seo crawl https://example.com/sitemap.xml
 
 ### Parsing URLs from the Clipboard:
 
-You can also paste a sitemap or list of URLs directly from your clipboard using the `paste` command:
+You can also paste a sitemap or list of URLs directly from your clipboard:
 
 ```bash
-seo paste
+seo crawl
 ```
 
 ### Parsing a Local Sitemap XML File:
@@ -121,9 +121,9 @@ seo list
 
 ## Roadmap
 
-- **SQLite Database Integration**: Optionally store parsed results for projects locally for easy retrieval. (`seo paste -s`)
-- **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser. (`seo paste -r`)
-- **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results. (`seo paste -w`)
+- **SQLite Database Integration**: Optionally store parsed results for projects locally for easy retrieval. (`seo crawl -s`)
+- **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser. (`seo crawl -r`)
+- **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results. (`seo crawl -w`)
 - **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
 - **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
 - **Publish to PyPI**: Publishing to the Python Package Index to allow installation with `pip install seowayfinder`. 

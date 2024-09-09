@@ -10,8 +10,7 @@ def create_parser():
         prog="seo",
         description=(
             "SEOwayfinder is a user-friendly command-line tool that helps you crawl "
-            "web pages, extract SEO metadata, and generate reports with ease. "
-            "Use this tool to analyze web page data in bulk and optimize your site's SEO."
+            "web pages, extract SEO metadata, and generate reports with ease."
         )
     )
 
@@ -21,13 +20,14 @@ def create_parser():
         'crawl',
         help=(
             'Crawl a URL or sitemap to extract web page data such as titles, '
-            'images, links, and more. Use the -o option to save the output to a file.'
+            'images, links, and more. If no URL is provided, it will use URLs from the clipboard.'
         )
     )
     parser_crawl.add_argument(
         'input',
         type=str,
-        help="The URL or sitemap to crawl for page data."
+        nargs='?',
+        help="The URL or sitemap to crawl. If omitted, URLs from the clipboard will be used."
     )
     parser_crawl.add_argument(
         '-o', '--output',
@@ -35,23 +35,6 @@ def create_parser():
         default=get_default_output_file(),
         help=(
             "Specify the output file path where the crawl results will be saved. "
-            "Defaults to a file called 'output.txt' on your desktop."
-        )
-    )
-
-    parser_paste = subparsers.add_parser(
-        'paste',
-        help=(
-            'Crawl a list of URLs or a sitemap copied to your clipboard. '
-            'SEOwayfinder will automatically crawl and extract SEO data from these URLs.'
-        )
-    )
-    parser_paste.add_argument(
-        '-o', '--output',
-        type=str,
-        default=get_default_output_file(),
-        help=(
-            "Specify the output file path where the results will be saved. "
             "Defaults to a file called 'output.txt' on your desktop."
         )
     )
