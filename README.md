@@ -27,7 +27,7 @@ To install the **SEOwayfinder** tool, follow these steps:
 
 1. **Ensure You Have Python and Git Installed:**
 
-   - **Python**: You’ll need Python, a popular programming language, installed on your system. You can download and install it from the [official Python website](https://www.python.org/downloads/). Python is available for Windows, macOS, and Linux.
+   - **Python**: You’ll need Python, a popular programming language, installed on your system. You can download and install it from the [official Python website](https://www.python.org/downloads/).
 
    - **Add Python to PATH**: During the Python installation process, you’ll see an option to "Add Python to PATH" in the installation window. Make sure this box is checked before you proceed with the installation. This step is very important because it allows you to run Python from the terminal or command prompt.
 
@@ -123,9 +123,9 @@ seo list
 
 ## Roadmap
 
-- **SQLite Database Integration**: Store parsed results for projects locally for easy retrieval.
-- **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser.
-- **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results.
+- **SQLite Database Integration**: Optionally store parsed results for projects locally for easy retrieval. (`seo paste -s`)
+- **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser. (`seo paste -r`)
+- **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results. (`seo paste -w`)
 - **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
 - **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
 - **Publish to PyPI**: Publishing to the Python Package Index to allow installation with `pip install seowayfinder`. 
