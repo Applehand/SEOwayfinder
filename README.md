@@ -1,11 +1,11 @@
-# SEOpus
+# SEOwayfinder
 
 ![The Digital Compass](https://github.com/Applehand/SEOpus/blob/master/assets/digital_compass.jpeg)
 
 > "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes."  
 > — Marcel Proust
 
-**SEOpus** offers a simple command-line solution to streamline SEO tasks by efficiently parsing web page data. It optimizes the extraction of critical SEO insights for bulk analysis, ensuring smoother and faster interaction with web data.
+**SEOwayfinder** offers a simple command-line solution to streamline SEO tasks by efficiently parsing web page data. It optimizes the extraction of critical SEO insights for bulk analysis, ensuring smoother and faster interaction with web data.
 
 
 ## Features
@@ -23,7 +23,7 @@
 
 ### Installation Instructions
 
-To install the **SEOpus** tool, follow these steps:
+To install the **SEOwayfinder** tool, follow these steps:
 
 1. **Ensure You Have Python and Git Installed:**
 
@@ -51,27 +51,27 @@ To install the **SEOpus** tool, follow these steps:
 
        You should see the Git version number.
 
-2. **Install SEOpus Using Python’s Package Manager (pip):**
+2. **Install SEOwayfinder Using Python’s Package Manager (pip):**
 
-   Once you have Python and Git installed, you’ll use Python’s package manager, `pip`, to install **SEOpus**. `pip` comes bundled with Python, so you don’t need to install it separately. 
+   Once you have Python and Git installed, you’ll use Python’s package manager, `pip`, to install **SEOwayfinder**. `pip` comes bundled with Python, so you don’t need to install it separately. 
 
    Here’s what you need to do:
 
    1. **Open a Terminal**: On Windows, use PowerShell or Command Prompt. On macOS or Linux, use the Terminal app.
 
-   2. **Run the Following Command**: This command will install SEOpus directly from the GitHub repository:
+   2. **Run the Following Command**: This command will install SEOwayfinder directly from the GitHub repository:
 
       ```bash
-      pip install git+https://github.com/Applehand/SEOpus.git
+      pip install git+https://github.com/Applehand/SEOwayfinder.git
       ```
 
-   3. **Verify Installation**: After the installation is complete, check if SEOpus is installed by running:
+   3. **Verify Installation**: After the installation is complete, check if SEOwayfinder is installed by running:
 
       ```bash
       seo --help
       ```
 
-      If the tool is installed correctly, you’ll see a list of available commands and options for SEOpus.
+      If the tool is installed correctly, you’ll see a list of available commands and options for SEOwayfinder.
 
 ---
 
@@ -128,8 +128,8 @@ seo list
 - **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results.
 - **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
 - **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
-- **Publish to PyPI**: Publishing to the Python Package Index to allow installation with `pip install seopus`. 
+- **Publish to PyPI**: Publishing to the Python Package Index to allow installation with `pip install seowayfinder`. 
 
 ## Contribution
 
-Feel free to contribute to SEOpus by submitting issues or pull requests to the GitHub repository.
+Feel free to contribute to SEOwayfinder by submitting issues or pull requests to the GitHub repository.
