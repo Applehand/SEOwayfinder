@@ -17,8 +17,8 @@
   - Links, images, scripts, and stylesheets
   - URL slugs, query parameters, and fragments
   - Robots, HREflang, canonical tags, and noindex directives
-- Output results in a structured, easy-to-read dashboard format for efficient analysis.
-- Generate an Excel sheet with actionable technical SEO recommendations ("tech work") to fix issues identified during the crawl.
+- Output results in a structured dashboard format for efficient analysis.
+- Generate an Excel sheet with page-by-page insights to fix issues identified during the crawl.
 
 
 ### Installation Instructions
