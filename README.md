@@ -128,6 +128,7 @@ seo list
 - **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results.
 - **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
 - **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
+- **Publish to PyPI**: Publishing to the Python Package Index to allow installation with `pip install seopus`. 
 
 ## Contribution
 
