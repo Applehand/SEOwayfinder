@@ -4,18 +4,28 @@ import requests
 
 
 def fetch_sitemap_content(sitemap_url):
+    """
+    Fetch and parse the content of a sitemap URL.
+
+    Depending on the content type (XML or HTML), this function will use the appropriate
+    parser (XML for sitemaps, HTML for individual web pages) to process the URL content.
+
+    Args:
+        sitemap_url (str): The URL of the sitemap or page to fetch and parse.
+
+    Returns:
+        bs4.BeautifulSoup: A BeautifulSoup object representing the parsed content, and the base URL (str).
+        If the content could not be fetched, returns (None, sitemap_url).
+    """
     try:
         html = fetch_url_content(sitemap_url)
         if not html:
             print(f"Failed to fetch or empty content for: {sitemap_url}")
             return None, sitemap_url
 
-        # Check if XML or HTML content and parse accordingly
         if is_xml_content(html, sitemap_url):
-            print(f"Detected XML content for URL: {sitemap_url}")
             soup_obj = BeautifulSoup(html, "xml")
         else:
-            print(f"Detected HTML content for URL: {sitemap_url}")
             soup_obj = BeautifulSoup(html, "html.parser")
 
         parsed_url = urlparse(sitemap_url)
@@ -30,6 +40,18 @@ def fetch_sitemap_content(sitemap_url):
 
 
 def is_xml_content(content, url):
+    """
+    Determine whether the fetched content is XML or HTML.
+
+    This function checks if the URL or content indicates XML format.
+
+    Args:
+        content (str): The raw content fetched from the URL.
+        url (str): The URL from which the content was fetched.
+
+    Returns:
+        bool: True if the content is XML, otherwise False.
+    """
     if url.endswith('.xml'):
         return True
 
@@ -40,6 +62,18 @@ def is_xml_content(content, url):
 
 
 def fetch_url_content(url):
+    """
+    Fetch the raw content of a URL.
+
+    This function makes an HTTP GET request to the given URL and retrieves the content.
+    If the request fails, it will return None.
+
+    Args:
+        url (str): The URL to fetch the content from.
+
+    Returns:
+        str: The raw content of the URL as a string. If fetching fails, returns None.
+    """
     try:
         print(f"Making request to: {url}")
         headers = {
