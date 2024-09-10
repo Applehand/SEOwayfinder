@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 import json
+import asyncio
 import os
-import time
 from urllib.parse import urljoin, urlparse
 from xml.etree.ElementTree import ParseError
 from .schemas import PageData, Image
@@ -39,7 +39,7 @@ def collect_and_process_sitemaps(sitemap_input, checked_links):
             return
         processed_sitemaps.add(sitemap_url)
 
-        content = fetch_url_content(sitemap_url)
+        content = asyncio.run(fetch_url_content(sitemap_url))
         if not content:
             print(f"No content found for: {sitemap_url}")
             return
@@ -131,8 +131,6 @@ def extract_and_parse_page_data(page_url, checked_links):
     Returns:
         PageData: An object containing the extracted page data.
     """
-    time.sleep(1)
-
     raw_page_data, base_url = fetch_sitemap_content(page_url)
     if not raw_page_data:
         return None

@@ -126,6 +126,9 @@ seo list
 - **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results. (`seo crawl -w`)
 - **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
 - **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
+- **Asynchronous Parsing**: Run crawling processes in async with Scrapy, a more performant crawling library.
+- **Upgrade to HTTPX**: Replace Requests library with HTTPX, a more performant and modern async library.
+- ~~**Render Page Javascript**: Render JavaScript for a more accurate html extraction and robust crawler.~~
 - **Publish to PyPI**: Publishing to the Python Package Index to allow installation with `pip install seowayfinder`. 
 
 ## Contribution

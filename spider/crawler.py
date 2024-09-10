@@ -1,6 +1,9 @@
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+import time
 import requests
+import asyncio
+from playwright.async_api import async_playwright
 
 
 def fetch_sitemap_content(sitemap_url):
@@ -18,7 +21,7 @@ def fetch_sitemap_content(sitemap_url):
         If the content could not be fetched, returns (None, sitemap_url).
     """
     try:
-        html = fetch_url_content(sitemap_url)
+        html = asyncio.run(fetch_url_content(sitemap_url))
         if not html:
             print(f"Failed to fetch or empty content for: {sitemap_url}")
             return None, sitemap_url
@@ -61,30 +64,51 @@ def is_xml_content(content, url):
     return False
 
 
-def fetch_url_content(url):
+async def fetch_url_content(url):
     """
     Fetch the raw content of a URL.
 
-    This function makes an HTTP GET request to the given URL and retrieves the content.
-    If the request fails, it will return None.
+    For XML content, this function makes an HTTP GET request.
+    For HTML content, it uses Playwright to render JavaScript and fetch the fully rendered content.
 
     Args:
         url (str): The URL to fetch the content from.
 
     Returns:
-        str: The raw content of the URL as a string. If fetching fails, returns None.
+        str: The raw or fully rendered content of the URL as a string. If fetching fails, returns None.
     """
+    time.sleep(1)  # Sleep to respect the server and avoid getting an IP ban.
     try:
         print(f"Making request to: {url}")
         headers = {
             'User-Agent': 'Mozilla/5.0',
             'Referer': 'http://google.com/'
         }
+
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
 
-        print(f"Successfully fetched content for: {url}")
-        return response.text
+        if is_xml_content(response.text, url):
+            print(f"Successfully fetched XML content for: {url}")
+            return response.text
+
+        print(f"Fetching JavaScript-rendered content for: {url}")
+        async with async_playwright() as p:
+            browser = await p.chromium.launch(headless=True)
+            page = await browser.new_page()
+
+            await page.goto(url)
+            await page.wait_for_load_state('networkidle')
+            content = await page.content()
+
+            await browser.close()
+
+        print(f"Successfully fetched rendered HTML content for: {url}")
+        return content
+
     except requests.RequestException as e:
-        print(f"Failed to fetch URL: {e}")
+        print(f"Failed to fetch URL with requests: {e}")
+        return None
+    except Exception as e:
+        print(f"Error with Playwright fetching content: {e}")
         return None
