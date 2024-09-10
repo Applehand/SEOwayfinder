@@ -120,7 +120,7 @@ def extract_urls_from_xml_sitemap(xml_content):
     return sitemap_urls, page_urls
 
 
-def extract_and_parse_page_data(page_url, checked_links):
+def extract_and_parse_page_data(page_url, checked_links) -> PageData:
     """
     Crawls and parses an HTML page to extract SEO-relevant data such as meta descriptions, headings, links, and images.
 
@@ -202,6 +202,7 @@ def extract_and_parse_page_data(page_url, checked_links):
     }
 
     return PageData(
+        url=page_url,
         title=title,
         meta_description=meta_description,
         headings=headings,

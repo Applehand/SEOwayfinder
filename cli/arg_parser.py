@@ -1,5 +1,5 @@
 import argparse
-from spider.utils import get_default_output_file
+from spider.utils import get_default_db_location
 
 
 def create_parser():
@@ -16,6 +16,7 @@ def create_parser():
 
     subparsers = parser.add_subparsers(dest='command', help='Available SEOwayfinder commands')
 
+    # Crawl command
     parser_crawl = subparsers.add_parser(
         'crawl',
         help=(
@@ -32,19 +33,31 @@ def create_parser():
     parser_crawl.add_argument(
         '-o', '--output',
         type=str,
-        default=get_default_output_file(),
+        default=get_default_db_location(),
         help=(
             "Specify the output file path where the crawl results will be saved. "
             "Defaults to a file called 'output.txt' on your desktop."
         )
     )
+    parser_crawl.add_argument(
+        '-s', '--save',
+        type=str,
+        help="Save the crawl results to the database under a project name (www.example.com)."
+    )
 
+    # List command
     parser_list = subparsers.add_parser(
         'list',
         help=(
             'List all crawled projects stored in the SEOwayfinder database. '
             'Use this to view past crawls and retrieve project information.'
         )
+    )
+
+    # Clear database command
+    parser_clear = subparsers.add_parser(
+        'rm',
+        help='Clear all data from the SEOwayfinder database.'
     )
 
     return parser

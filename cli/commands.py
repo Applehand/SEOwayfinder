@@ -1,5 +1,6 @@
 from spider.utils import fetch_urls_from_clipboard, save_json_to_file
 from spider.extractor import collect_and_process_sitemaps, extract_and_parse_page_data
+from spider.storage import save_page_data, fetch_all_project_names, fetch_pages_by_project, clear_all_data
 from .arg_parser import create_parser
 
 
@@ -28,6 +29,7 @@ def handle_crawl_command(args):
         return
 
     all_page_data = {}
+    project_name = args.save if args.save else None
 
     for page_url in page_urls:
         if page_url.endswith('.xml'):
@@ -37,15 +39,36 @@ def handle_crawl_command(args):
             if page_data:
                 all_page_data[page_url] = page_data
 
-    save_json_to_file(all_page_data, args.output)
+                if project_name:
+                    save_page_data(project_name, page_data)
+                else:
+                    print(f"No project name: {project_name}")
+
+    print(fetch_pages_by_project(project_name))
+    # save_json_to_file(all_page_data, args.output)
 
 
 def handle_list_command():
     """
     Handle the 'list' command.
 
-    This function is responsible for listing all crawled projects stored in the database.
-    (This functionality is a placeholder and needs to be implemented.)
+    This function lists all crawled projects stored in the database.
+    """
+    project_names = fetch_all_project_names()
+
+    if not project_names:
+        print("No projects found in the database.")
+    else:
+        print("Crawled Projects:")
+        for project in project_names:
+            print(f"- {project}")
+
+
+def handle_clear_command():
+    """
+    Handle the 'cleardb' command.
+
+    This function clears all data from the 'projects' and 'pages' tables in the database.
 
     Args:
         None
@@ -53,7 +76,7 @@ def handle_list_command():
     Returns:
         None
     """
-    print("Listing all projects in the database...")
+    clear_all_data()
 
 
 def execute_command():
@@ -79,3 +102,5 @@ def execute_command():
         handle_crawl_command(args)
     elif args.command == 'list':
         handle_list_command()
+    elif args.command == 'rm':
+        handle_clear_command()
