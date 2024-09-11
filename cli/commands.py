@@ -20,7 +20,6 @@ def handle_crawl_command(args):
     """
     checked_links = dict()
 
-    # Get input from command-line or clipboard
     if args.input:
         page_urls = [args.input]
     else:
@@ -30,7 +29,6 @@ def handle_crawl_command(args):
         print("No valid URLs provided or found in clipboard.")
         return
 
-    # Project name for saving
     project_name = args.save if args.save else None
 
     if project_name:
@@ -41,12 +39,10 @@ def handle_crawl_command(args):
     all_page_data = {}
 
     for page_url in page_urls:
-        # Crawl a sitemap or individual page
         if page_url.endswith('.xml'):
             sitemap_data = collect_and_process_sitemaps(page_url, checked_links)
             if sitemap_data:
                 all_page_data.update(sitemap_data)
-                # Save each page in sitemap if project name is provided
                 if project_name:
                     for url, page_data in sitemap_data.items():
                         save_page_data(project_name, page_data)
@@ -54,7 +50,6 @@ def handle_crawl_command(args):
             page_data = extract_and_parse_page_data(page_url, checked_links)
             if page_data:
                 all_page_data[page_url] = page_data
-                # Save immediately after extraction
                 if project_name:
                     save_page_data(project_name, page_data)
 

@@ -121,7 +121,7 @@ seo list
 
 ## Roadmap
 
-- **SQLite Database Integration**: Optionally store parsed results for projects locally for easy retrieval. (`seo crawl -s`)
+- ~~**SQLite Database Integration**: Optionally store parsed results for projects locally for easy retrieval. (`seo crawl -s`)~~
 - **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser. (`seo crawl -r`)
 - **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results. (`seo crawl -w`)
 - **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
