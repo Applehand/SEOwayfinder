@@ -3,3 +3,5 @@ build
 *.egg-info
 __pycache__
 *.txt
+all_projects_pages.db
+/venv/

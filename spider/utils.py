@@ -37,20 +37,20 @@ def save_json_to_file(page_data, output_file):
         print(f"File saved to: {output_file}")
 
 
-def get_default_output_file():
+def get_default_db_location():
     """
-    Provides the default output file path on the desktop.
+    Provides the default output file path for the database.
 
     Returns:
-        Path: A Path object pointing to a file called 'output.txt' on the desktop.
+        str: A string representing the full path to the db location in a hidden app directory in /home.
     """
     home = Path.home()
-    desktop = home / 'Desktop'
-    if not desktop.exists():
-        print(f"Desktop path not found: {desktop}, using home directory.")
-        desktop = home
+    app_dir = home / '.seowayfinder_db'
+    app_dir.mkdir(exist_ok=True)
 
-    return desktop / "output.txt"
+    db_file = app_dir / 'all_projects_pages.db'
+
+    return str(db_file)
 
 
 def fetch_urls_from_clipboard():

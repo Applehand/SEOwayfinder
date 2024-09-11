@@ -8,6 +8,7 @@ class Image(BaseModel):
 
 
 class PageData(BaseModel):
+    url: str = ""
     title: str = ""
     meta_description: str = ""
     canonical: Optional[str] = None  # Canonical URL, if present
