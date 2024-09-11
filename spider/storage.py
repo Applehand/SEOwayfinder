@@ -112,7 +112,9 @@ def fetch_all_project_names():
 
 
 def fetch_pages_by_project(project_name: str):
-    """Fetch all pages for a specific project."""
+    """
+    Fetch all pages for a specific project from the database.
+    """
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
@@ -144,3 +146,43 @@ def clear_all_data():
         print(f"Error occurred while deleting data: {e}")
     finally:
         conn.close()
+
+def fetch_page_data_by_id(page_id: int):
+    """
+    Fetch the data for a specific page by its id.
+    """
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT * FROM pages WHERE id = ?
+    ''', (page_id,))
+
+    page = cursor.fetchone()
+    conn.close()
+
+    if page:
+        return {
+            'id': page[0],
+            'url': page[2],
+            'title': page[3],
+            'meta_description': page[4],
+            'canonical': page[5],
+            'robots': page[6],
+            'noindex': page[7],
+            'non_200_links': json.loads(page[8]),
+            'missing_alt_images': json.loads(page[9]),
+            'structured_data': json.loads(page[10]),
+            'headings': json.loads(page[11]),
+            'links': json.loads(page[12]),
+            'internal_links': json.loads(page[13]),
+            'external_links': json.loads(page[14]),
+            'hreflang': json.loads(page[15]),
+            'images': json.loads(page[16]),
+            'paragraphs': json.loads(page[17]),
+            'scripts': json.loads(page[18]),
+            'stylesheets': json.loads(page[19]),
+            'slug': page[20],
+            'url_parts': json.loads(page[21])
+        }
+    return None

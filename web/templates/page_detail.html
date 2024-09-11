@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Data for {{ page_data.title }}{% endblock %}
+
+{% block content %}
+    <h2>Page Data for: {{ page_data.url }}</h2>
+
+    <ul>
+        <li><strong>Title:</strong> {{ page_data.title }}</li>
+        <li><strong>Meta Description:</strong> {{ page_data.meta_description }}</li>
+        <li><strong>Canonical URL:</strong> {{ page_data.canonical }}</li>
+        <li><strong>Robots Tag:</strong> {{ page_data.robots }}</li>
+        <li><strong>Noindex:</strong> {{ page_data.noindex }}</li>
+        <li><strong>Headings:</strong>
+            <ul>
+                <li><strong>H1:</strong> {{ page_data.headings.h1 }}</li>
+                <li><strong>H2:</strong> {{ page_data.headings.h2 }}</li>
+                <li><strong>H3:</strong> {{ page_data.headings.h3 }}</li>
+                <li><strong>H4:</strong> {{ page_data.headings.h4 }}</li>
+                <li><strong>H5:</strong> {{ page_data.headings.h5 }}</li>
+                <li><strong>H6:</strong> {{ page_data.headings.h6 }}</li>
+
+            </ul>
+        </li>
+        <li><strong>Links:</strong>
+            <ul>
+                <li><strong>Internal Links:</strong>
+                    <ul>
+                        {% for link in page_data.internal_links %}
+                            <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><strong>External Links:</strong>
+                    <ul>
+                        {% for link in page_data.external_links %}
+                            <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Images:</strong>
+            <ul>
+                {% for image in page_data.images %}
+                    <li><strong>Src:</strong> <a href="{{ image.src }}" target="_blank">{{ image.src }}</a>, <strong>Alt:</strong> {{ image.alt }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        <!-- Add other relevant details as needed -->
+    </ul>
+{% endblock %}

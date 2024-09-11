@@ -73,6 +73,17 @@ To install the **SEOwayfinder** tool, follow these steps:
 
 ---
 
+## Starting the Flask Web App Locally
+
+To run the web interface for SEOwayfinder, run:
+
+```bash
+seo dash
+```
+
+This will open the dashboard in your browser at http://127.0.0.1:5000/.
+
+
 ## Usage
 
 Once installed, you can use the `seo` command in your terminal.
