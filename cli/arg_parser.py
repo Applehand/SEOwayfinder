@@ -54,6 +54,17 @@ def create_parser():
         )
     )
 
+    # Get project data command
+    parser_get = subparsers.add_parser(
+        'get',
+        help='Fetch all the pages data for a specific project from the database.'
+    )
+    parser_get.add_argument(
+        'project_name',
+        type=str,
+        help="The name of the project to fetch data for."
+    )
+
     # Clear database command
     parser_clear = subparsers.add_parser(
         'rm',

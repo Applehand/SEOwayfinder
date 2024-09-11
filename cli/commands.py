@@ -1,3 +1,4 @@
+import json
 from spider.utils import fetch_urls_from_clipboard, save_json_to_file
 from spider.extractor import collect_and_process_sitemaps, extract_and_parse_page_data
 from spider.storage import save_page_data, fetch_all_project_names, fetch_pages_by_project, clear_all_data
@@ -19,6 +20,7 @@ def handle_crawl_command(args):
     """
     checked_links = dict()
 
+    # Get input from command-line or clipboard
     if args.input:
         page_urls = [args.input]
     else:
@@ -28,24 +30,36 @@ def handle_crawl_command(args):
         print("No valid URLs provided or found in clipboard.")
         return
 
-    all_page_data = {}
+    # Project name for saving
     project_name = args.save if args.save else None
 
+    if project_name:
+        print(f"Saving results under project name: {project_name}")
+    else:
+        print("No project name provided. Results will not be saved to the database.")
+
+    all_page_data = {}
+
     for page_url in page_urls:
+        # Crawl a sitemap or individual page
         if page_url.endswith('.xml'):
-            all_page_data.update(collect_and_process_sitemaps(page_url, checked_links))
+            sitemap_data = collect_and_process_sitemaps(page_url, checked_links)
+            if sitemap_data:
+                all_page_data.update(sitemap_data)
+                # Save each page in sitemap if project name is provided
+                if project_name:
+                    for url, page_data in sitemap_data.items():
+                        save_page_data(project_name, page_data)
         else:
             page_data = extract_and_parse_page_data(page_url, checked_links)
             if page_data:
                 all_page_data[page_url] = page_data
-
+                # Save immediately after extraction
                 if project_name:
                     save_page_data(project_name, page_data)
-                else:
-                    print(f"No project name: {project_name}")
 
-    print(fetch_pages_by_project(project_name))
-    # save_json_to_file(all_page_data, args.output)
+    # if args.output:
+    #     save_json_to_file(all_page_data, args.output)
 
 
 def handle_list_command():
@@ -79,6 +93,35 @@ def handle_clear_command():
     clear_all_data()
 
 
+def handle_get_command(args):
+    """
+    Handle the 'get' command.
+
+    This function fetches all the pages for a specific project from the database
+    and prints them in a readable format.
+
+    Args:
+        args (Namespace): Parsed command-line arguments containing the project name.
+
+    Returns:
+        None
+    """
+    project_name = args.project_name
+
+    if not project_name:
+        print("Please provide a project name.")
+        return
+
+    pages = fetch_pages_by_project(project_name)
+
+    if not pages:
+        print(f"No data found for project '{project_name}'.")
+    else:
+        print(f"Pages for project '{project_name}':")
+        for page in pages:
+            print(json.dumps(page, indent=4))
+
+
 def execute_command():
     """
     Execute the appropriate command based on user input.
@@ -98,9 +141,12 @@ def execute_command():
     if not args.command:
         parser.print_help()
         return
-    if args.command == 'crawl':
+    elif args.command == 'crawl':
         handle_crawl_command(args)
+    elif args.command == "get":
+        handle_get_command(args)
     elif args.command == 'list':
         handle_list_command()
     elif args.command == 'rm':
         handle_clear_command()
+
