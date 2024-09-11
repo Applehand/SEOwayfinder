@@ -71,4 +71,8 @@ def create_parser():
         help='Clear all data from the SEOwayfinder database.'
     )
 
+    # Start Flask web dashboard command
+    parser_dash = subparsers.add_parser('dash', help='Start the Flask dashboard for viewing project reports.')
+
+
     return parser

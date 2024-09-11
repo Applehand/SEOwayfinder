@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}All Projects{% endblock %}
+
+{% block content %}
+    <h2>All Projects</h2>
+
+    {% if project_names %}
+        <ul>
+            {% for project in project_names %}
+                <li>
+                    <a href="{{ url_for('show_report', project_name=project) }}">
+                        {{ project }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No projects found in the database.</p>
+    {% endif %}
+{% endblock %}
