@@ -124,7 +124,7 @@ seo list
 - ~~**SQLite Database Integration**: Optionally store parsed results for projects locally for easy retrieval. (`seo crawl -s`)~~
 - **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser. (`seo crawl -r`)
 - **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results. (`seo crawl -w`)
-- **Interactive Web Dashboard**: Provide an interactive web-based UI for querying and visualizing the data stored in the database.
+- ~~**Simple Web Dashboard**: Provide a basic web UI for viewing projects and the data stored in the database.~~(`seo dash`)
 - **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
 - **Asynchronous Parsing**: Run crawling processes in async with Scrapy, a more performant crawling library.
 - **Upgrade to HTTPX**: Replace Requests library with HTTPX, a more performant and modern async library.
