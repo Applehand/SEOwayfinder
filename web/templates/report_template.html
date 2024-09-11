@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Report for {{ project_name }}{% endblock %}
+
+{% block content %}
+    <h2>Report for Project: {{ project_name }}</h2>
+
+    {% if pages %}
+        <ul>
+            {% for page in pages %}
+                <li>
+                    <p>
+                        <strong>Page URL:</strong>
+                        <a href="{{ page[2] }}" target="_blank">{{ page[2] }}</a>
+                    </p>
+
+                    <p>
+                        <strong>Actions:</strong>
+                        <a href="{{ url_for('show_page_data', page_id=page[0]) }}">View Page Data</a>
+                    </p>
+
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No data available for this project.</p>
+    {% endif %}
+{% endblock %}

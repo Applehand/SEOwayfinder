@@ -1,4 +1,6 @@
 import json
+import os
+import subprocess
 from spider.utils import fetch_urls_from_clipboard, save_json_to_file
 from spider.extractor import collect_and_process_sitemaps, extract_and_parse_page_data
 from spider.storage import save_page_data, fetch_all_project_names, fetch_pages_by_project, clear_all_data
@@ -88,41 +90,49 @@ def handle_clear_command():
     clear_all_data()
 
 
-def handle_get_command(args):
+def handle_get_command(project_name):
     """
-    Handle the 'get' command.
-
-    This function fetches all the pages for a specific project from the database
-    and prints them in a readable format.
+    Handle the 'get' command to fetch project data from the database.
 
     Args:
-        args (Namespace): Parsed command-line arguments containing the project name.
+        project_name (str): The name of the project to fetch data for.
 
     Returns:
-        None
+        pages (list): A list of pages for the project or an empty list if not found.
     """
-    project_name = args.project_name
-
     if not project_name:
-        print("Please provide a project name.")
-        return
+        return None, "Please provide a project name."
 
     pages = fetch_pages_by_project(project_name)
 
     if not pages:
-        print(f"No data found for project '{project_name}'.")
-    else:
-        print(f"Pages for project '{project_name}':")
-        for page in pages:
-            print(json.dumps(page, indent=4))
+        return None, f"No data found for project '{project_name}'."
+
+    return pages
+
+
+def handle_dash_command():
+    """
+    Handle the 'dash' command to start the Flask web dashboard.
+    """
+    # Set the environment variable FLASK_APP to your main Flask app
+    os.environ['FLASK_APP'] = 'main.py'
+
+    # Start the Flask server using subprocess
+    try:
+        subprocess.run(["flask", "run"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to start the Flask server: {e}")
+    except FileNotFoundError:
+        print("Flask command not found. Make sure Flask is installed.")
 
 
 def execute_command():
     """
-    Execute the appropriate command based on user input.
+    Execute the appropriate command based on user input (CLI context).
 
     This function parses the command-line arguments and executes the corresponding
-    command (crawl, paste, list). If no valid command is provided, it displays help.
+    command (crawl, get, list). If no valid command is provided, it displays help.
 
     Args:
         None
@@ -139,9 +149,15 @@ def execute_command():
     elif args.command == 'crawl':
         handle_crawl_command(args)
     elif args.command == "get":
-        handle_get_command(args)
+        project_name = args.project_name
+        pages = handle_get_command(project_name)
+        print(f"Pages for project '{project_name}':")
+        for page in pages:
+            print(json.dumps(page, indent=4))
     elif args.command == 'list':
         handle_list_command()
     elif args.command == 'rm':
         handle_clear_command()
+    elif args.command == 'dash':
+        handle_dash_command()
 
