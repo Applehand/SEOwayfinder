@@ -2,15 +2,10 @@ from setuptools import setup
 from setuptools.command.install import install
 import subprocess
 
-
 class PostInstallCommands(install):
     """Post-installation for installation mode."""
     def run(self):
         install.run(self)
-
-        from spider.storage import create_tables
-        create_tables()
-
         try:
             import playwright
             subprocess.check_call(['playwright', 'install'])
