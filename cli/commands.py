@@ -3,7 +3,7 @@ import os
 import subprocess
 from spider.utils import fetch_urls_from_clipboard, save_json_to_file
 from spider.extractor import collect_and_process_sitemaps, extract_and_parse_page_data
-from spider.storage import save_page_data, fetch_all_project_names, fetch_pages_by_project, clear_all_data
+from spider.storage import save_page_data, fetch_all_project_names, fetch_pages_by_project, clear_all_data, remove_project_by_name
 from .arg_parser import create_parser
 
 
@@ -111,6 +111,32 @@ def handle_get_command(project_name):
     return pages
 
 
+def handle_rm_command(args):
+    """
+    Handle the 'rm' command to remove project data from the database.
+
+    Args:
+        args (Namespace): Parsed command-line arguments, which include the project_name and --all flag.
+
+    Returns:
+        None
+    """
+    if args.all:
+        clear_all_data()
+        print("All data has been removed from the database.")
+        return
+
+    if not args.project_name:
+        print("Please specify a project name or use the --all flag to remove all data.")
+        return
+
+    project_name = args.project_name
+    if remove_project_by_name(project_name):
+        print(f"Project '{project_name}' and its associated data have been removed.")
+    else:
+        print(f"No project found with the name '{project_name}'.")
+
+
 def handle_dash_command():
     """
     Handle the 'dash' command to start the Flask web dashboard.
@@ -132,7 +158,7 @@ def execute_command():
     Execute the appropriate command based on user input (CLI context).
 
     This function parses the command-line arguments and executes the corresponding
-    command (crawl, get, list). If no valid command is provided, it displays help.
+    command (crawl, get, list, rm). If no valid command is provided, it displays help.
 
     Args:
         None
@@ -151,13 +177,14 @@ def execute_command():
     elif args.command == "get":
         project_name = args.project_name
         pages = handle_get_command(project_name)
-        print(f"Pages for project '{project_name}':")
-        for page in pages:
-            print(json.dumps(page, indent=4))
+        if pages:
+            print(f"Pages for project '{project_name}':")
+            for page in pages:
+                print(json.dumps(page, indent=4))
     elif args.command == 'list':
         handle_list_command()
     elif args.command == 'rm':
-        handle_clear_command()
+        handle_rm_command(args)
     elif args.command == 'dash':
         handle_dash_command()
 

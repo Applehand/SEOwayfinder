@@ -65,10 +65,21 @@ def create_parser():
         help="The name of the project to fetch data for."
     )
 
-    # Clear database command
-    parser_clear = subparsers.add_parser(
+    # Remove project command
+    parser_rm = subparsers.add_parser(
         'rm',
-        help='Clear all data from the SEOwayfinder database.'
+        help='Remove a specific project or all data from the SEOwayfinder database.'
+    )
+    parser_rm.add_argument(
+        'project_name',
+        type=str,
+        nargs='?',
+        help="The name of the project to remove. If omitted with --all, removes all projects."
+    )
+    parser_rm.add_argument(
+        '--all',
+        action='store_true',
+        help="If provided, all projects and data will be removed from the database."
     )
 
     # Start Flask web dashboard command

@@ -190,3 +190,29 @@ def fetch_page_data_by_id(page_id: int):
             'project_name': page[22]
         }
     return None
+
+
+def remove_project_by_name(project_name: str):
+    """Remove a specific project and its related data by project name."""
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute('SELECT id FROM projects WHERE project_name = ?', (project_name,))
+        project = cursor.fetchone()
+
+        if not project:
+            return False
+
+        project_id = project[0]
+
+        cursor.execute('DELETE FROM pages WHERE project_id = ?', (project_id,))
+        cursor.execute('DELETE FROM projects WHERE id = ?', (project_id,))
+
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"Error occurred while deleting project '{project_name}': {e}")
+        return False
+    finally:
+        conn.close()
