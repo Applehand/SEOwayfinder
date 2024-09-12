@@ -62,12 +62,18 @@ To parse a sitemap URL and extract data:
 seo crawl https://example.com/sitemap.xml
 ```
 
+To parse a sitemap URL and save to the database:
+
+```bash
+seo crawl https://example.com/sitemap.xml -s <project_name>
+```
+
 ### Parsing URLs from the Clipboard:
 
 You can also paste a sitemap or list of URLs directly from your clipboard:
 
 ```bash
-seo crawl
+seo crawl -s <project_name>
 ```
 
 ### Parsing a Local Sitemap XML File:
@@ -92,6 +98,12 @@ To remove a project from the database:
 
 ```bash
 seo rm <project_name>
+```
+
+To remove all projects from the database:
+
+```bash
+seo rm <project_name> --all
 ```
 
 ## Roadmap
