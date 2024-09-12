@@ -3,67 +3,35 @@
 > "The only true voyage of discovery, the only fountain of Eternal Youth, would be not to visit strange lands but to possess other eyes, to behold the universe through the eyes of another, of a hundred others, to behold the hundred universes that each of them beholds, that each of them is;"  
 > — Marcel Proust
 
-**SEOwayfinder** offers a simple command-line solution to streamline SEO tasks by efficiently parsing web page data. It optimizes the extraction of critical SEO insights for bulk analysis, ensuring smoother and faster interaction with web data.
-
+**SEOwayfinder** simplifies SEO tasks with a command-line tool and web dashboard that allows users to efficiently crawl, parse, view, and analyze web page data for bulk SEO insights.
 
 ## Features
 
-- Crawl web pages directly or via a sitemap to extract key SEO data, including:
-  - Page titles
-  - Meta descriptions
-  - Headings (H1-H6)
-  - Links, images, scripts, and stylesheets
+- Crawl URLs or sitemaps to extract SEO metadata such as:
+  - Page titles, meta descriptions, and headings (H1-H6)
+  - Links (internal and external), images, and structured data
   - URL slugs, query parameters, and fragments
-  - Robots, HREflang, canonical tags, and noindex directives
-- Output results in a structured dashboard format for efficient analysis.
-- Generate an Excel sheet with page-by-page insights to fix issues identified during the crawl.
-
+  - Canonical tags, robots directives, noindex tags, and HREFlang attributes
+- View detailed SEO insights through a web dashboard, enabling project-based browsing of crawl results.
+- Export results to JSON for external analysis.
+- Track SEO data for multiple projects using a built-in SQLite database.
+- JavaScript rendering support for fully crawling pages with dynamic content.
 
 ### Installation Instructions
 
 To install the **SEOwayfinder** tool, follow these steps:
 
-1. **Ensure You Have Python and Git Installed:**
+1. **Ensure You Have [Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/downloads) installed and on your PATH**
 
-   - **Python**: You’ll need Python, a popular programming language, installed on your system. You can download and install it from the [official Python website](https://www.python.org/downloads/).
+2. **Install SEOwayfinder Using `pip`:**
 
-   - **Add Python to PATH**: During the Python installation process, you’ll see an option to "Add Python to PATH" in the installation window. Make sure this box is checked before you proceed with the installation. This step is very important because it allows you to run Python from the terminal or command prompt.
-
-     - If you forget to check this option, don’t worry! You can manually add Python to your system's PATH by following [this guide](https://realpython.com/add-python-to-path/). Without this, you won’t be able to run the `python` or `pip` commands from the terminal.
-
-   - **Verify Installation**: To check if Python is installed on your machine, open a terminal (on Windows, you can use PowerShell or Command Prompt; on macOS or Linux, use the Terminal app) and run the following command:
-
-       ```bash
-       python --version
-       ```
-
-       If Python is installed, you’ll see the version number. If not, follow the installation guide on the Python website.
-
-   - **Git**: Git is a version control tool that helps manage code. You can download Git from the [Git website](https://git-scm.com/downloads). Follow the installation instructions for your operating system.
-
-     - **Verify Installation**: After installing Git, check if it’s working by running this command in your terminal:
-
-       ```bash
-       git --version
-       ```
-
-       You should see the Git version number.
-
-2. **Install SEOwayfinder Using Python’s Package Manager (pip):**
-
-   Once you have Python and Git installed, you’ll use Python’s package manager, `pip`, to install **SEOwayfinder**. `pip` comes bundled with Python, so you don’t need to install it separately. 
-
-   Here’s what you need to do:
-
-   1. **Open a Terminal**: On Windows, use PowerShell or Command Prompt. On macOS or Linux, use the Terminal app.
-
-   2. **Run the Following Command**: This command will install SEOwayfinder directly from the GitHub repository:
+   1. **Run the Following Command**: This command will install SEOwayfinder directly from the GitHub repository:
 
       ```bash
       pip install git+https://github.com/Applehand/SEOwayfinder.git
       ```
 
-   3. **Verify Installation**: After the installation is complete, check if SEOwayfinder is installed by running:
+   2. **Verify Installation**: After the installation is complete, check if SEOwayfinder is installed by running:
 
       ```bash
       seo
@@ -72,6 +40,8 @@ To install the **SEOwayfinder** tool, follow these steps:
       If the tool is installed correctly, you’ll see a list of available commands and options for SEOwayfinder.
 
 ---
+
+## Usage
 
 ## Starting the Flask Web App Locally
 
@@ -83,10 +53,6 @@ seo dash
 
 This will open the dashboard in your browser at http://127.0.0.1:5000/.
 
-
-## Usage
-
-Once installed, you can use the `seo` command in your terminal.
 
 ### Parsing a Sitemap URL:
 
@@ -112,29 +78,26 @@ To parse a local sitemap XML file:
 seo crawl /path/to/sitemap.xml
 ```
 
-### Saving Output:
+### Listing Projects:
 
-You can specify the output file using the `-o` or `--output` option:
-
-```bash
-seo crawl https://example.com/sitemap.xml -o /path/to/output.json
-```
-
-By default, the output will be saved as `output.txt` on your desktop.
-
-### Listing Projects (Future Functionality):
-
-To list all projects in the database (coming soon):
+To list all projects in the database:
 
 ```bash
 seo list
 ```
 
+### Removing a Project:
+
+To remove a project from the database:
+
+```bash
+seo rm <project_name>
+```
+
 ## Roadmap
 
 - ~~**SQLite Database Integration**: Optionally store parsed results for projects locally for easy retrieval. (`seo crawl -s`)~~
-- **HTML Report Generation**: Automatically generate and open a detailed SEO report in your browser. (`seo crawl -r`)
-- **Tech Work Spreadsheet**: Automatically generate a template for technical SEO tasks based on crawl results. (`seo crawl -w`)
+- **Tech Work Recs**: Generate a web view for implementing SEO fixes based on crawl results, with a cli and web option to export to spreadsheet. (`seo crawl -w`)
 - ~~**Simple Web Dashboard**: Provide a basic web UI for viewing projects and the data stored in the database.~~(`seo dash`)
 - **Advanced Filtering and Search**: Allow users to filter and search parsed data within the command line or web dashboard.
 - **Asynchronous Parsing**: Run crawling processes in async with Scrapy, a more performant crawling library.
