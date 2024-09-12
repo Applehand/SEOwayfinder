@@ -3,24 +3,53 @@
 {% block title %}Report for {{ project_name }}{% endblock %}
 
 {% block content %}
-    <h2>Report for Project: {{ project_name }}</h2>
+    <h2>SEO Report for Project: {{ project_name }}</h2>
+
+    <!-- Project-wide Summary -->
+    <h3>Project Summary</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>Total Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Total Pages -->
+            <tr>
+                <td><strong>Total Pages:</strong></td>
+                <td>{{ pages | length }}</td>
+            </tr>
+            <!-- Pages with Noindex -->
+            <tr>
+                <td><strong>Pages with Noindex:</strong></td>
+                <td>{{ pages | selectattr('noindex', 'equalto', True) | list | length }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- Pages List Section -->
+    <h3>Pages List</h3>
 
     {% if pages %}
         <ul>
             {% for page in pages %}
-                <li>
-                    <p>
-                        <strong>Page URL:</strong>
-                        <a href="{{ page[2] }}" target="_blank">{{ page[2] }}</a>
-                    </p>
+            <li>
+                <p>
+                    <strong>Page URL:</strong>
+                    <a href="{{ page[2] }}" target="_blank">{{ page[2] }}</a> <!-- URL -->
+                </p>
 
-                    <p>
-                        <strong>Actions:</strong>
-                        <a href="{{ url_for('show_page_data', page_id=page[0]) }}">View Page Data</a>
-                    </p>
+                <p>
+                    <a href="{{ url_for('show_page_data', page_id=page[0]) }}">
+                        View Page Data
+                    </a>
+                </p>
 
-                    <hr>
-                </li>
+                <hr>
+            </li>
             {% endfor %}
         </ul>
     {% else %}

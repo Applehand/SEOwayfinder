@@ -11,7 +11,6 @@ def create_tables():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
-    # Create the projects table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS projects (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,7 +18,6 @@ def create_tables():
     )
     ''')
 
-    # Create the pages table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS pages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -147,15 +145,19 @@ def clear_all_data():
     finally:
         conn.close()
 
+
 def fetch_page_data_by_id(page_id: int):
     """
-    Fetch the data for a specific page by its id.
+    Fetch the data for a specific page by its id, including the project_name.
     """
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
     cursor.execute('''
-    SELECT * FROM pages WHERE id = ?
+    SELECT pages.*, projects.project_name
+    FROM pages
+    JOIN projects ON pages.project_id = projects.id
+    WHERE pages.id = ?
     ''', (page_id,))
 
     page = cursor.fetchone()
@@ -164,6 +166,7 @@ def fetch_page_data_by_id(page_id: int):
     if page:
         return {
             'id': page[0],
+            'project_id': page[1],
             'url': page[2],
             'title': page[3],
             'meta_description': page[4],
@@ -183,6 +186,7 @@ def fetch_page_data_by_id(page_id: int):
             'scripts': json.loads(page[18]),
             'stylesheets': json.loads(page[19]),
             'slug': page[20],
-            'url_parts': json.loads(page[21])
+            'url_parts': json.loads(page[21]),
+            'project_name': page[22]
         }
     return None

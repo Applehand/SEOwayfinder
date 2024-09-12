@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Wayfinder Reports{% endblock %}</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
 </head>
 <body>
@@ -15,7 +15,7 @@
         <h1>SEOwayfinder</h1>
         <nav>
             <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('index') }}">All Projects</a></li>
             </ul>
         </nav>
     </header>

@@ -3,50 +3,231 @@
 {% block title %}Page Data for {{ page_data.title }}{% endblock %}
 
 {% block content %}
+    <a href="{{ url_for('show_report', project_name=page_data.project_name) }}" class="back-button">
+        &larr; Back to Project Report
+    </a>
+
     <h2>Page Data for: {{ page_data.url }}</h2>
 
     <ul>
+        <!-- Essential SEO Information -->
         <li><strong>Title:</strong> {{ page_data.title }}</li>
         <li><strong>Meta Description:</strong> {{ page_data.meta_description }}</li>
         <li><strong>Canonical URL:</strong> {{ page_data.canonical }}</li>
         <li><strong>Robots Tag:</strong> {{ page_data.robots }}</li>
         <li><strong>Noindex:</strong> {{ page_data.noindex }}</li>
-        <li><strong>Headings:</strong>
-            <ul>
-                <li><strong>H1:</strong> {{ page_data.headings.h1 }}</li>
-                <li><strong>H2:</strong> {{ page_data.headings.h2 }}</li>
-                <li><strong>H3:</strong> {{ page_data.headings.h3 }}</li>
-                <li><strong>H4:</strong> {{ page_data.headings.h4 }}</li>
-                <li><strong>H5:</strong> {{ page_data.headings.h5 }}</li>
-                <li><strong>H6:</strong> {{ page_data.headings.h6 }}</li>
 
+        <!-- URL Parts -->
+        {% if page_data.url_parts %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                URL Parts <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                <li><strong>Slug:</strong> {{ page_data.slug }}</li>
+                <li><strong>Params:</strong> {{ page_data.url_parts.params }}</li>
+                <li><strong>Query:</strong> {{ page_data.url_parts.query }}</li>
+                <li><strong>Fragment:</strong> {{ page_data.url_parts.fragment }}</li>
             </ul>
         </li>
-        <li><strong>Links:</strong>
-            <ul>
-                <li><strong>Internal Links:</strong>
-                    <ul>
+        {% endif %}
+
+        <!-- Headings -->
+        {% if page_data.headings %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Headings <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                {% for level, heading_list in page_data.headings.items() %}
+                    {% if heading_list %}
+                    <li x-data="{ open: false }">
+                        <strong @click="open = !open" style="cursor: pointer;">
+                            {{ level.upper() }} ({{ heading_list | length }}) <span x-text="open ? '↑' : '↓'"></span>
+                        </strong>
+                        <ul x-show="open">
+                            {% for heading in heading_list %}
+                                <li>{{ heading }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li><strong>{{ level.upper() }}</strong> (No headings available)</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+
+        <!-- Links: Internal, External, Non-200 -->
+        {% if page_data.internal_links or page_data.external_links or page_data.non_200_links %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Links <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                <!-- Internal Links -->
+                <li x-data="{ open: false }">
+                    <strong @click="open = !open" style="cursor: pointer;">
+                        Internal Links ({{ page_data.internal_links | length }}) <span x-text="open ? '↑' : '↓'"></span>
+                    </strong>
+                    {% if page_data.internal_links %}
+                    <ul x-show="open">
                         {% for link in page_data.internal_links %}
                             <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
                         {% endfor %}
                     </ul>
+                    {% else %}
+                    <p>(No internal links available)</p>
+                    {% endif %}
                 </li>
-                <li><strong>External Links:</strong>
-                    <ul>
+
+                <!-- External Links -->
+                <li x-data="{ open: false }">
+                    <strong @click="open = !open" style="cursor: pointer;">
+                        External Links ({{ page_data.external_links | length }}) <span x-text="open ? '↑' : '↓'"></span>
+                    </strong>
+                    {% if page_data.external_links %}
+                    <ul x-show="open">
                         {% for link in page_data.external_links %}
                             <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
                         {% endfor %}
                     </ul>
+                    {% else %}
+                    <p>(No external links available)</p>
+                    {% endif %}
                 </li>
+
+                <!-- Non-200 Links -->
+                {% if page_data.non_200_links %}
+                <li x-data="{ open: false }">
+                    <strong @click="open = !open" style="cursor: pointer;">
+                        Non-200 Links ({{ page_data.non_200_links | length }}) <span x-text="open ? '↑' : '↓'"></span>
+                    </strong>
+                    <ul x-show="open">
+                        {% for link in page_data.non_200_links %}
+                            <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endif %}
             </ul>
         </li>
-        <li><strong>Images:</strong>
-            <ul>
+        {% endif %}
+
+        <!-- Image Analysis -->
+        {% if page_data.images or page_data.missing_alt_images %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Images <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
                 {% for image in page_data.images %}
                     <li><strong>Src:</strong> <a href="{{ image.src }}" target="_blank">{{ image.src }}</a>, <strong>Alt:</strong> {{ image.alt }}</li>
                 {% endfor %}
+                {% if page_data.missing_alt_images %}
+                    <li><strong>Images Missing Alt Text:</strong>
+                        <ul>
+                            {% for image in page_data.missing_alt_images %}
+                                <li>{{ image }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
         </li>
-        <!-- Add other relevant details as needed -->
+        {% endif %}
+
+        <!-- Structured Data -->
+        {% if page_data.structured_data %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Structured Data <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                {% for data in page_data.structured_data %}
+                    <li>{{ data | safe }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+
+        <!-- Hreflang Attributes -->
+        {% if page_data.hreflang %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Hreflang Attributes <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                {% for lang, url in page_data.hreflang.items() %}
+                    <li><strong>{{ lang }}:</strong> <a href="{{ url }}" target="_blank">{{ url }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+
+        <!-- Paragraphs -->
+        {% if page_data.paragraphs %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Paragraphs <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                {% for paragraph in page_data.paragraphs %}
+                    <li>{{ paragraph }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+
+        <!-- Core Web Vitals (Placeholder) -->
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Core Web Vitals <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                <li><strong>Largest Contentful Paint (LCP):</strong> N/A (Placeholder)</li>
+                <li><strong>Cumulative Layout Shift (CLS):</strong> N/A (Placeholder)</li>
+                <li><strong>First Input Delay (FID):</strong> N/A (Placeholder)</li>
+            </ul>
+        </li>
+
+        <!-- Mobile Optimization Data (Placeholder) -->
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Mobile Optimization <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                <li><strong>Viewport Meta Tag:</strong> N/A (Placeholder)</li>
+                <li><strong>Mobile Usability Issues:</strong> N/A (Placeholder)</li>
+            </ul>
+        </li>
+
+        <!-- Scripts and Stylesheets -->
+        {% if page_data.scripts %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Scripts <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                {% for script in page_data.scripts %}
+                    <li><a href="{{ script }}" target="_blank">{{ script }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+
+        {% if page_data.stylesheets %}
+        <li x-data="{ open: false }">
+            <strong @click="open = !open" style="cursor: pointer;">
+                Stylesheets <span x-text="open ? '↑' : '↓'"></span>
+            </strong>
+            <ul x-show="open">
+                {% for stylesheet in page_data.stylesheets %}
+                    <li><a href="{{ stylesheet }}" target="_blank">{{ stylesheet }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
     </ul>
 {% endblock %}

@@ -2,6 +2,7 @@ from flask import render_template
 from spider.storage import fetch_all_project_names, fetch_pages_by_project, fetch_page_data_by_id
 from web import report_view
 
+
 def init_routes(app):
     @app.route('/')
     def index():
@@ -20,4 +21,6 @@ def init_routes(app):
         page_data = fetch_page_data_by_id(page_id)
         if not page_data:
             return "Page not found", 404
+
         return render_template('page_detail.html', page_data=page_data)
+
