@@ -1,5 +1,7 @@
 from flask import Flask
 from web.routes import init_routes
+from spider.storage import create_tables
+create_tables()
 
 
 def create_app():
