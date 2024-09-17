@@ -139,7 +139,6 @@ def clear_all_data():
         cursor.execute('DELETE FROM projects')
 
         conn.commit()
-        print("All data removed from projects and pages tables.")
     except Exception as e:
         print(f"Error occurred while deleting data: {e}")
     finally:

@@ -113,28 +113,26 @@ def handle_get_command(project_name):
 
 def handle_rm_command(args):
     """
-    Handle the 'rm' command to remove project data from the database.
-
-    Args:
-        args (Namespace): Parsed command-line arguments, which include the project_name and --all flag.
-
-    Returns:
-        None
+    Handles the removal of a specific project or all projects.
     """
+    if args.all and args.project_name:
+        print("Error: You cannot specify both a project name and the --all flag.")
+        return
+    
     if args.all:
+        # Clear all projects
         clear_all_data()
-        print("All data has been removed from the database.")
-        return
-
-    if not args.project_name:
-        print("Please specify a project name or use the --all flag to remove all data.")
-        return
-
-    project_name = args.project_name
-    if remove_project_by_name(project_name):
-        print(f"Project '{project_name}' and its associated data have been removed.")
+        print("All projects have been removed.")
+    elif args.project_name:
+        # Remove specific project
+        success = remove_project_by_name(args.project_name)
+        if success:
+            print(f"Project '{args.project_name}' has been removed.")
+        else:
+            print(f"Error: Project '{args.project_name}' not found.")
     else:
-        print(f"No project found with the name '{project_name}'.")
+        print("Error: You must specify a project name or use the --all flag.")
+
 
 
 def handle_dash_command():
